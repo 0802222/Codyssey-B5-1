@@ -11,10 +11,10 @@
 
 
 ## 결과물
-1. 스키마 생성 SQL 1개 파일
-2. 샘플 데이터 INSERT SQL 1개 파일
-3. 쿼리 15개 SQL 1개 파일
-4. 실행 결과 캡처(이미지 또는 텍스트) 폴더 1개
+1. 스키마 생성 SQL: `docs/sql/schema.sql`
+2. 샘플 데이터 INSERT SQL: `docs/sql/data.sql`
+3. 쿼리 15개 SQL: `docs/sql/query.sql`
+4. 실행 결과 캡처 폴더: `docs/screenshot/`
 5. (선택) ERD 다이어그램 이미지 1개 (draw.io, dbdiagram.io 등 활용)
 
 
@@ -45,10 +45,37 @@
 - 데이터 수정 및 삭제 2개 이상 (UPDATE, DELETE)
 - 인덱스 1개 이상 (CREATE INDEX + 적용 이유 1줄)
 
+<br>
+<br>
 
-# MySQL
+# 실행 순서
+1. MySQL 접속 후 DB 생성 및 선택
+   ```sql
+   CREATE DATABASE codyssey_mission_db;
+   USE codyssey_mission_db;
+   ```
+
+2. 스키마 생성
+   ```sql
+   SOURCE docs/sql/schema.sql;
+   ```
+
+3. 샘플 데이터 삽입
+   ```sql
+   SOURCE docs/sql/data.sql;
+   ```
+
+4. 쿼리 실행
+   ```sql
+   SOURCE docs/sql/query.sql;
+   ```
+
+<br>
+<br>
+
+# 과제 수행 내역
 리눅스 Ubuntu/Debian 계열 기준
-## 1. 설치
+## 1. MySQL 설치
 1. 설치
     ```bash
     sudo apt update
@@ -67,9 +94,9 @@
     ```bash
     sudo systemctl status mysql
     ```
+    ![alt text](docs/screenshot/b5-1_mysql_started.png)
 
-
-## 2. 접속 & DB 생성
+## 2. MySQL 접속
 1. 로그인
     ```bash
     mysql -u root -p
@@ -77,31 +104,47 @@
     ```
 
 2. DB 목록확인
-    ```bash
+    ```sql
     SHOW DATABASES;
     ```
 
-3. DB 생성
-    ```bash
+## 3. DB 생성
+1. DB 생성
+    ```sql
     CREATE DATABASE <DB이름>;
     ```
 
-4. DB 삭제
-    ```bash
-    DROP DATABASE <DB이름>;
-    ```
-
-5. DB 선택(사용)
-    ```bash
+2. DB 선택(사용)
+    ```sql
     USE <DB이름>;
     ```
 
+3. 기타 - DB 삭제
+    ```sql
+    DROP DATABASE <DB이름>;
+    ```
 
-## 3. TABLE 생성
-주제를 Codyssey 미션관리 로 잡고 테이블은 아래와 같이 설계했다.
+
+## 4. TABLE 생성
+### 테이블 설계
+주제를 Codyssey 미션관리 로 잡고, 학생–미션–진도–동료평가를 관리하는 데이터베이스로 설계했다.
 
 1. 학생 정보 (student)
+- id, 이름, 이메일, 과정, 가입일
 2. 미션 정보 (mission)
+- id, 미션 제목, 카테고리, 난이도, 예상 소요시간, 미션 시작일
 3. 진도 관리 (mission_progress)
+- id, 학생 id, 미션 id, 진행 상태, 미션 제출일, 수정일, 최종 결과
 4. 동료 평가 (peer_review)
+- id, 평가자 id, 피평가자 id, 평가 결과 (PASS / FAIL), 코멘트, 작성일
+
+### 테이블 목록 확인
+```SQL
+SHOW TABLES;
+```
+
+### 각 테이블 구조 확인
+```SQL
+DESC <테이블명>;
+```
 
